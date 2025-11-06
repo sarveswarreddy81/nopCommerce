@@ -1,7 +1,8 @@
 name: mydonnet project
-on: push
-branches:
-  - develop
+on: 
+  push:
+    branches:
+      - develop
 jobs:
   donnet_publish:
        runs-on: 'self-hosted'
