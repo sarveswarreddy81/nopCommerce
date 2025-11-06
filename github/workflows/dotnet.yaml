@@ -1,0 +1,12 @@
+name: mydonnet project
+on: push
+branches:
+  - develop
+jobs:
+  donnet_publish:
+       runs-on: 'self-hosted'
+steps:
+  - name: code chekout
+    user: actions/chekout@v5
+  - name: this is my dotnet publish command
+    run: dotnet publish -c Release src/presentation/nop.web/nop.web.csproj -o demo
