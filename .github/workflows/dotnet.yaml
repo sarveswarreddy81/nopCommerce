@@ -5,9 +5,9 @@ on:
       - develop
 jobs:
   donnet_publish:
-       runs-on: 'self-hosted'
-steps:
-  - name: code chekout
-    uses: actions/chekout@v5
-  - name: this is my dotnet publish command
-    run: dotnet publish -c Release src/Presentation/Nop.Web/Nop.Web.csproj -o demo
+    runs-on: 'self-hosted'
+    steps:
+      - name: code chekout
+        uses: actions/chekout@v5
+      - name: this is my dotnet publish command
+        run: dotnet publish -c Release src/Presentation/Nop.Web/Nop.Web.csproj -o demo
