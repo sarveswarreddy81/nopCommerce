@@ -8,6 +8,6 @@ jobs:
     runs-on: 'self-hosted'
     steps:
       - name: code chekout
-        uses: actions/chekout@v3
+        uses: actions/checkout@v5
       - name: this is my dotnet publish command
         run: dotnet publish -c Release src/Presentation/Nop.Web/Nop.Web.csproj -o demo
