@@ -37,6 +37,6 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
 
       - name: Deploy to Kubernetes
-        run:
+        run: |
           kubectl apply -f .
           kubectl get po
