@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: css-dep
+  labels:
+    env: prod
+    app: web
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: dotnet-nop
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+  template:
+    metadata:
+      labels:
+        app: dotnet-nop
+    spec:
+      containers:
+      - name: dotnet-con
+        image: 903874537457.dkr.ecr.eu-north-1.amazonaws.com/mydummypod
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+
+        # ✅ Important: make sure ASP.NET binds correctly
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:5000"
+
+        # ✅ Startup Probe (gives app time to boot up)
+        startupProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 60   # wait before first probe
+          periodSeconds: 10         # check every 10 sec
+          failureThreshold: 10      # allow up to 100 sec startup
+
+        # ✅ Readiness Probe (traffic only after it's ready)
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          failureThreshold: 3
+
+        # ✅ Liveness Probe (restarts app if hung)
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          failureThreshold: 3
+
+        # ✅ Resource tuning for t2.medium (2 vCPU, 4GB)
+        resources:
+          requests:
+            cpu: "800m"
+            memory: "1500Mi"
+          limits:
+            cpu: "1800m"
+            memory: "1800Mi"
